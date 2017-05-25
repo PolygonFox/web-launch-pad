@@ -1,6 +1,7 @@
 import Vue from 'vue';
+import Vuex from 'vuex';
 import VueRouter from 'vue-router';
-
+import { sync } from 'vuex-router-sync';
 
 // Global style
 import './style/bootstrap.scss';
@@ -9,6 +10,7 @@ import './style/bootstrap.scss';
 import App from './components/layouts/App.vue';
 
 Vue.use(VueRouter);
+Vue.use(Vuex);
 
 // Routes
 const routes = [
@@ -28,6 +30,19 @@ const router = new VueRouter({
   routes,
 });
 
+// Store
+const store = new Vuex.Store({
+  state: {
+  },
+  mutations: {
+  },
+  actions: {
+  },
+});
+
+sync(store, router);
+
 new Vue({
   router,
+  store,
 }).$mount('#app');

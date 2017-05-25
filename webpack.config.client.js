@@ -1,12 +1,16 @@
-var path = require('path');
+const path = require('path');
+
+const src = path.resolve(__dirname, './src/client');
+const dist = path.resolve(__dirname, './dist/web');
 
 module.exports = {
-  context: path.resolve(__dirname, 'src'),
+  target: 'web',
+  context: src,
   entry: {
-    client: './client',
+    client: './index.js',
   },
   output: {
-    path: path.resolve(__dirname, 'dist'),
+    path: dist,
     filename: '[name].bundle.js',
   },
   module: {
@@ -16,7 +20,7 @@ module.exports = {
         include: [
           path.resolve(__dirname, 'src'),
         ],
-        loader: 'babel-loader',
+        loader: 'babel-loader?presets[]=es2015',
       },
       {
         test: /\.vue$/,
