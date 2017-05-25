@@ -1,3 +1,6 @@
 node_modules
-dist
-!dist/index.html
+
+dist/*
+!dist/web
+dist/web/*
+!dist/web/index.html
