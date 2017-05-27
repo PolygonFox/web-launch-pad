@@ -5,13 +5,13 @@
   "main": "index.js",
   "scripts": {
     "dev": "concurrently --kill-others --raw --prefix \"[{name}]\" --names \"CLIENT BUILDER,SERVER BUILDER,SERVER\" \"npm run dev:client\" \"npm run dev:server\" \"npm run dev:start-server\"",
-    "dev:client": "NODE_ENV=development ./node_modules/.bin/webpack-dev-server --no-info --content-base dist/web/ --inline --config webpack.config.client.js",
+    "dev:client": "NODE_ENV=development ./node_modules/.bin/webpack-dev-server --history-api-fallback --no-info --content-base dist/web/ --inline --config webpack.config.client.js",
     "dev:server": "NODE_ENV=development ./node_modules/.bin/webpack --hide-modules --config webpack.config.server.js --watch",
     "dev:start-server": "NODE_ENV=development supervisor -qn ./dist/server/server.js",
     "build:server": "NODE_ENV=production ./node_modules/.bin/webpack --config webpack.config.server.js",
     "build:client": "NODE_ENV=production ./node_modules/.bin/webpack --config webpack.config.client.js",
     "build": "npm run build:server && npm run build:client",
-    "start": "NODE_ENV=production node ./dist/server.js"
+    "start": "NODE_ENV=production node ./dist/server/server.js"
   },
   "keywords": [],
   "author": "",

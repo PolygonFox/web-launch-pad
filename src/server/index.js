@@ -22,7 +22,7 @@ const router = new Router();
 app.use(bodyParser());
 
 app.use(cors({
-  origin: 'http://localhost:8080',
+  origin: '*',
 }));
 
 // Authentication
@@ -38,18 +38,17 @@ router.all('/graphql', graphqlHTTP({
   graphiql: true,
 }));
 
+app.use(router.routes()).use(router.allowedMethods());
+
 app.use(serve('dist/web'));
 
-const readFileThunk = (src) => {
-  return new Promise((resolve, reject) => {
-    fs.readFile(src, { encoding: 'utf-8' }, (err, data) => {
-      if (err) return reject(err);
-      return resolve(data);
-    });
+const readFileThunk = src => new Promise((resolve, reject) => {
+  fs.readFile(src, { encoding: 'utf-8' }, (err, data) => {
+    if (err) return reject(err);
+    return resolve(data);
   });
-};
+});
 
-app.use(router.routes()).use(router.allowedMethods());
 
 // Return the client
 app.use(async (ctx, next) => {
@@ -59,6 +58,8 @@ app.use(async (ctx, next) => {
   ctx.response.type = 'text/html';
   ctx.response.body = await readFileThunk(src);
 });
+
+
 
 app.listen(port);
 

@@ -1,2 +1,9 @@
-@import '~foundation-sites/assets/foundation-flex.scss';
+// Global settings
+@import 'settings';
+
+// Foundation
+@import '~foundation-sites/scss/foundation';
+@include foundation-everything($flex: true);
+
+// Application
 @import './app';

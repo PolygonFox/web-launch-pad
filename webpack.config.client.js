@@ -33,7 +33,6 @@ module.exports = {
     ],
   },
   resolve: {
-    extensions: ['.js', '.scss'],
     alias: {
       vue: 'vue/dist/vue.js',
     },

@@ -11,6 +11,10 @@ import './style/bootstrap.scss';
 
 // Layout and pages
 import App from './components/layouts/App.vue';
+import { Error404 } from './components/pages/errors';
+import { Login, Register } from './components/pages/auth';
+import Home from './components/pages/Home.vue';
+
 
 Vue.use(VueApollo);
 Vue.use(VueRouter);
@@ -19,14 +23,30 @@ Vue.use(Vuex);
 // Routes
 const routes = [
   {
-    name: 'home',
     path: '/',
     component: App,
-  },
-  {
-    name: 'test',
-    path: '/test',
-    component: App,
+    children: [
+      {
+        name: 'home',
+        path: '/',
+        component: Home,
+      },
+      {
+        name: 'auth.login',
+        path: 'login',
+        component: Login,
+      },
+      {
+        name: 'auth.register',
+        path: 'register',
+        component: Register,
+      },
+      {
+        name: 'errors.404',
+        path: ':slug',
+        component: Error404,
+      },
+    ],
   },
 ];
 
