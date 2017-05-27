@@ -1,7 +1,7 @@
 import Koa from 'koa';
 import serve from 'koa-static';
 import Router from 'koa-router';
-import cors from 'koa-cors';
+import cors from 'kcors';
 import graphqlHTTP from 'koa-graphql';
 
 import MyGraphQLSchema from './schema';
@@ -19,8 +19,11 @@ router.all('/graphql', graphqlHTTP({
 app.use(cors({
   origin: 'http://localhost:8080',
 }));
+
 app.use(serve('dist/web'));
+
 app.use(router.routes()).use(router.allowedMethods());
+
 app.listen(port);
 
 console.log(`Hdasj on port: ${port}`);
