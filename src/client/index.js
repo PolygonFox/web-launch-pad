@@ -1,3 +1,4 @@
+// TODO: JWT, Authentication, connect JWT to GraphQL
 import Vue from 'vue';
 import Vuex from 'vuex';
 import VueRouter from 'vue-router';
@@ -30,6 +31,7 @@ const routes = [
 ];
 
 const router = new VueRouter({
+  mode: 'history',
   routes,
 });
 

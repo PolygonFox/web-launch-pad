@@ -28,11 +28,12 @@ module.exports = {
       },
       {
         test: /\.scss$/,
-        loader: 'style-loader!css-loader?sourceMap=true!sass-loader?sourceMap=true',
+        loaders: ['style-loader', 'css-loader?sourceMap', 'sass-loader?sourceMap'],
       },
     ],
   },
   resolve: {
+    extensions: ['.js', '.scss'],
     alias: {
       vue: 'vue/dist/vue.js',
     },
