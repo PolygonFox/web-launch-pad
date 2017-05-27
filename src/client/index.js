@@ -2,6 +2,8 @@ import Vue from 'vue';
 import Vuex from 'vuex';
 import VueRouter from 'vue-router';
 import { sync } from 'vuex-router-sync';
+import VueApollo from 'vue-apollo';
+import { ApolloClient, createNetworkInterface } from 'apollo-client';
 
 // Global style
 import './style/bootstrap.scss';
@@ -9,6 +11,7 @@ import './style/bootstrap.scss';
 // Layout and pages
 import App from './components/layouts/App.vue';
 
+Vue.use(VueApollo);
 Vue.use(VueRouter);
 Vue.use(Vuex);
 
@@ -42,7 +45,21 @@ const store = new Vuex.Store({
 
 sync(store, router);
 
+// Apollo
+const apolloClient = new ApolloClient({
+  networkInterface: createNetworkInterface({
+    uri: 'http://localhost:3000/graphql',
+    transportBatching: true,
+  }),
+  connectToDevTools: true,
+});
+
+const apolloProvider = new VueApollo({
+  defaultClient: apolloClient,
+});
+
 new Vue({
   router,
   store,
+  apolloProvider,
 }).$mount('#app');
