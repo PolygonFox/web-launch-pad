@@ -11,7 +11,7 @@ const schema = new GraphQLSchema({
       hello: {
         type: GraphQLString,
         resolve() {
-          return 'world';
+          return 'Hello! This is an API result.';
         },
       },
     },

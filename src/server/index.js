@@ -23,4 +23,4 @@ app.use(serve('dist/web'));
 app.use(router.routes()).use(router.allowedMethods());
 app.listen(port);
 
-console.log(`Server running on port: ${port}`);
+console.log(`Hdasj on port: ${port}`);

@@ -4,10 +4,10 @@
   "description": "A boilerplate for my future projects.",
   "main": "index.js",
   "scripts": {
-    "dev": "concurrently --kill-others \"npm run dev:client\" \"npm run dev:server\" \"npm run dev:start-server\"",
+    "dev": "concurrently --kill-others --raw --prefix \"[{name}]\" --names \"CLIENT BUILDER,SERVER BUILDER,SERVER\" \"npm run dev:client\" \"npm run dev:server\" \"npm run dev:start-server\"",
     "dev:client": "NODE_ENV=development ./node_modules/.bin/webpack-dev-server --no-info --content-base dist/web/ --inline --config webpack.config.client.js",
     "dev:server": "NODE_ENV=development ./node_modules/.bin/webpack --hide-modules --config webpack.config.server.js --watch",
-    "dev:start-server": "NODE_ENV=development ./node_modules/.bin/nodemon ./dist/server.js --watch ./dist/server.js",
+    "dev:start-server": "NODE_ENV=development supervisor -qn ./dist/server/server.js",
     "build:server": "NODE_ENV=production ./node_modules/.bin/webpack --config webpack.config.server.js",
     "build:client": "NODE_ENV=production ./node_modules/.bin/webpack --config webpack.config.client.js",
     "build": "npm run build:server && npm run build:client",
@@ -43,9 +43,7 @@
     "vue-template-compiler": "^2.3.3",
     "vuex": "^2.3.1",
     "vuex-router-sync": "^4.1.3",
-    "webpack": "^2.6.0",
-    "webpack-dev-middleware": "^1.10.2",
-    "webpack-dev-server": "^2.4.5"
+    "webpack": "^2.6.0"
   },
   "devDependencies": {
     "concurrently": "^3.4.0",
@@ -58,8 +56,10 @@
     "eslint-plugin-promise": "^3.5.0",
     "eslint-plugin-standard": "^3.0.1",
     "eslint-plugin-vue": "^2.0.1",
+    "forever": "^0.15.3",
     "koa-webpack-hot-middleware": "^1.0.3",
-    "nodemon": "^1.11.0",
+    "webpack-dev-middleware": "^1.10.2",
+    "webpack-dev-server": "^2.4.5",
     "webpack-node-externals": "^1.6.0"
   }
 }
