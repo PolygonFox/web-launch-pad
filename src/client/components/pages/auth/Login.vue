@@ -1,6 +1,7 @@
 <template lang="html">
   <div>
     <form action="#" @submit.prevent="login">
+      <label v-for="error in errors">{{ error }}</label>
       <input type="text" placeholder="E-mail" v-model="email">
       <input type="password" placeholder="Password" v-model="password">
       <input type="submit" value="Login" class="button">
@@ -18,6 +19,7 @@ export default {
     return {
       email: '',
       password: '',
+      errors: [],
     };
   },
   methods: {
@@ -26,10 +28,15 @@ export default {
         email: this.email,
         password: this.password,
       };
-      this.$http.post(`${settings.api}/login`, data).then((response) => {
-        console.log(response);
-      }).catch((error) => {
-        console.log(error);
+      this.$http.post(`${settings.api}/authenticate`, data).then((response) => {
+        if (response.data.success) {
+          console.log(response.data);
+          this.$success('You logged in!');
+        } else {
+          this.errors = response.data.errors;
+        }
+      }).catch(() => {
+        //
       });
     },
   },

@@ -73,30 +73,30 @@ export default (app) => {
   }));
 
   app.use(route.post('/authenticate',
-      (ctx) => {
-        User.findOne({
-          email: ctx.request.body.email,
-        }, (err, user) => {
-          if (err) throw err;
+    async (ctx) => {
 
-          if (!user) {
-            ctx.response.body = { success: false, errors: ['Authentication failed.'] };
-          } else {
-            // Check if the password matches
-            user.comparePassword(ctx.request.body.password, (compareError, isMatch) => {
-              if (isMatch && !compareError) {
-                // Create the token
-                const token = jwt.sign(user, config.jwt.secret, {
-                  expiresIn: 10080, // in seconds
-                });
-                ctx.response.body = { success: true, token: `JWT ${token}` };
-              } else {
-                ctx.response.body = { success: false, errors: ['Password did not match'] };
-              }
-            });
-          }
-        });
-      },
+      const user = await User.findOne({ email: ctx.request.body.email });
+
+      console.log(user, ctx.request.body.email);
+      if (!user) {
+        ctx.response.body = { success: false, errors: ['Authentication failed.'] };
+      } else {
+        const isMatch = user.comparePassword(ctx.request.body.password);
+
+        console.log('Kaas', isMatch);
+      //
+      //   if (isMatch) {
+      //     const token = jwt.sign(user, config.jwt.secret, {
+      //       expiresIn: 10080, // in seconds
+      //     });
+      //
+      //     ctx.response.body = { success: true, token: `JWT ${token}` };
+      //   } else {
+      //     ctx.response.body = { success: false, errors: ['Password did not match'] };
+      //   }
+      // }
+      }
+    },
   ));
   app.use(route.get('/dashboard', passport.authenticate('jwt', { session: false }), (ctx) => {
     console.log(ctx);

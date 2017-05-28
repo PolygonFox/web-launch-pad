@@ -34,7 +34,8 @@ export default {
       };
       this.$http.post(`${settings.api}/register`, data).then((response) => {
         if (response.data.success) {
-          this.errors.push('Registration successfull!');
+          this.$router.push({ name: 'auth.login' });
+          this.$success('Registration successful! You can now login.');
         } else {
           this.errors = response.data.errors;
         }

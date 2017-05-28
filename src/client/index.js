@@ -1,4 +1,6 @@
 // TODO: JWT, Authentication, connect JWT to GraphQL
+// TODO: Separate style to its own output
+
 import Vue from 'vue';
 import Vuex from 'vuex';
 import VueResource from 'vue-resource';
@@ -12,50 +14,16 @@ import settings from '../settings';
 // Global style
 import './style/bootstrap.scss';
 
-// Layout and pages
-import App from './components/layouts/App.vue';
-import { Error404 } from './components/pages/errors';
-import { Login, Register } from './components/pages/auth';
-import Home from './components/pages/Home.vue';
+import routes from './routes';
+import { store as notifications, install as installNotifications } from './notifications';
 
 Vue.use(VueApollo);
 Vue.use(VueRouter);
 Vue.use(VueResource);
 Vue.use(Vuex);
 
-// Routes
-const routes = [
-  {
-    path: '/',
-    component: App,
-    children: [
-      {
-        name: 'home',
-        path: '/',
-        component: Home,
-      },
-      {
-        name: 'auth.login',
-        path: 'login',
-        meta: { title: 'Login' },
-        component: Login,
-      },
-      {
-        name: 'auth.register',
-        path: 'register',
-        meta: { title: 'Register' },
-        component: Register,
-      },
-      {
-        name: 'errors.404',
-        path: ':slug',
-        meta: { title: 'Not found' },
-        component: Error404,
-      },
-    ],
-  },
-];
 
+// Routes
 const router = new VueRouter({
   mode: 'history',
   routes,
@@ -68,13 +36,12 @@ router.beforeEach((to, from, next) => {
 
 // Store
 const store = new Vuex.Store({
-  state: {
-  },
-  mutations: {
-  },
-  actions: {
+  modules: {
+    notifications,
   },
 });
+
+Vue.use(installNotifications, store);
 
 sync(store, router);
 

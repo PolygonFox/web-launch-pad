@@ -7,3 +7,15 @@
 
 // Application
 @import './app';
+@import './notifications';
+
+.fade-enter-active,
+.fade-leave-active {
+  transform: translateX(0%);
+  transition: transform .5s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  transform: translateX(200%);
+}
