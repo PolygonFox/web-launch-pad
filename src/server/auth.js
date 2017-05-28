@@ -1,9 +1,9 @@
 import passport from 'koa-passport';
-
-import { Strategy as LocalStrategy } from 'passport-local';
+import config from './config';
+import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 
 const fetchUser = (() => {
-  const user = { id: 1, username: 'test', password: 'test' };
+  const user = { id: 1, email: 'test@test.com', password: 'test' };
   return async function returnUser() {
     return user;
   };
@@ -22,9 +22,12 @@ passport.deserializeUser(async (id, done) => {
   }
 });
 
-passport.use(new LocalStrategy((username, password, done) => {
+passport.use(new JwtStrategy({
+  secretOrKey: config.jwt.secret,
+  jwtFromRequest: ExtractJwt.fromAuthHeader()
+}, (payload, done) => {
   fetchUser().then((user) => {
-    if (username === user.username && password === user.password) {
+    if (email === user.email && password === user.password) {
       done(null, user);
     } else {
       done(null, false);

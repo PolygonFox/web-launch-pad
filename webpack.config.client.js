@@ -37,4 +37,8 @@ module.exports = {
       vue: 'vue/dist/vue.js',
     },
   },
+  devServer: {
+    host: '0.0.0.0',
+    disableHostCheck: true,
+  },
 };

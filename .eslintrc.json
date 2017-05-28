@@ -4,5 +4,8 @@
         "vue",
         "import",
         "html"
-    ]
+    ],
+    "rules": {
+      "consistent-return": "off"
+    }
 }
