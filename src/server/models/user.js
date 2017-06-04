@@ -42,11 +42,15 @@ UserSchema.pre('save', function preSave(next) {
   }
 });
 
-// Create method to compare password
-UserSchema.methods.comparePassword = function* comparePassword(password) {
-  const isMatch = yield bcrypt.compare(password, this.password);
-  console.log('Kaas2' + isMatch);
-  return isMatch;
+UserSchema.methods.comparePassword = function comparePassword(password) {
+  return new Promise((resolve, error) => {
+    bcrypt.compare(password, this.password, (err, result) => {
+      if (err) {
+        error(err);
+      }
+      resolve(result);
+    });
+  });
 };
 
 export default connection.model('User', UserSchema);

@@ -1,5 +1,5 @@
 <template lang="html">
-  <div>
+  <div class="column medium-4">
     <form action="#" @submit.prevent="login">
       <label v-for="error in errors">{{ error }}</label>
       <input type="text" placeholder="E-mail" v-model="email">
@@ -30,8 +30,10 @@ export default {
       };
       this.$http.post(`${settings.api}/authenticate`, data).then((response) => {
         if (response.data.success) {
-          console.log(response.data);
+
+          this.$store.dispatch('login', response.data.token);
           this.$success('You logged in!');
+          this.$router.push({ name: 'home' });
         } else {
           this.errors = response.data.errors;
         }

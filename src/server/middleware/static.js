@@ -14,7 +14,7 @@ export default (app) => {
 
   // Return the client
   app.use(async (ctx, next) => {
-    const src = path.join(path.resolve('.'), 'dist/web/index.html');
+    const src = path.resolve('.dist/web/index.html');
 
     await next();
     ctx.response.type = 'text/html';

@@ -74,27 +74,22 @@ export default (app) => {
 
   app.use(route.post('/authenticate',
     async (ctx) => {
-
       const user = await User.findOne({ email: ctx.request.body.email });
 
-      console.log(user, ctx.request.body.email);
       if (!user) {
         ctx.response.body = { success: false, errors: ['Authentication failed.'] };
       } else {
-        const isMatch = user.comparePassword(ctx.request.body.password);
+        const isMatch = await user.comparePassword(ctx.request.body.password);
 
-        console.log('Kaas', isMatch);
-      //
-      //   if (isMatch) {
-      //     const token = jwt.sign(user, config.jwt.secret, {
-      //       expiresIn: 10080, // in seconds
-      //     });
-      //
-      //     ctx.response.body = { success: true, token: `JWT ${token}` };
-      //   } else {
-      //     ctx.response.body = { success: false, errors: ['Password did not match'] };
-      //   }
-      // }
+        if (isMatch) {
+          const token = jwt.sign({ email: user.email, role: user.role }, config.jwt.secret, {
+            expiresIn: 10080, // in seconds
+          });
+
+          ctx.response.body = { success: true, token: `JWT ${token}` };
+        } else {
+          ctx.response.body = { success: false, errors: ['Password did not match'] };
+        }
       }
     },
   ));

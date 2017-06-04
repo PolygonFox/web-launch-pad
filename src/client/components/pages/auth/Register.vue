@@ -1,5 +1,5 @@
 <template lang="html">
-  <div>
+  <div class="column medium-4">
     <form action="#" @submit.prevent="register">
       <label v-for="error in errors">{{ error }}</label>
       <input type="text" placeholder="E-mail" v-model="email" autocomplete="off">

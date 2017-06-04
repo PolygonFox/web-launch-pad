@@ -3,7 +3,7 @@ import { Error404 } from './components/pages/errors';
 import { Login, Register } from './components/pages/auth';
 import Home from './components/pages/Home.vue';
 
-export default [
+export const routes = [
   {
     path: '/',
     component: App,
@@ -34,3 +34,11 @@ export default [
     ],
   },
 ];
+
+export const guestRoutes = [
+  'auth.login',
+  'auth.register',
+  'errors.404',
+];
+
+export default { routes, guestRoutes };

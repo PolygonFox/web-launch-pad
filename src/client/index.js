@@ -14,14 +14,14 @@ import settings from '../settings';
 // Global style
 import './style/bootstrap.scss';
 
-import routes from './routes';
+import { routes, guestRoutes } from './routes';
 import { store as notifications, install as installNotifications } from './notifications';
+import { store as authentication } from './auth';
 
 Vue.use(VueApollo);
 Vue.use(VueRouter);
 Vue.use(VueResource);
 Vue.use(Vuex);
-
 
 // Routes
 const router = new VueRouter({
@@ -31,6 +31,19 @@ const router = new VueRouter({
 
 router.beforeEach((to, from, next) => {
   document.title = to.meta.title ? `${to.meta.title} - ${settings.projectName}` : settings.projectName;
+
+  const isAuthenticated = window.localStorage.getItem('token');
+
+  if (isAuthenticated) {
+    if (guestRoutes.includes(to.name)) {
+      router.push({ name: 'home' });
+      return;
+    }
+  } else if (!guestRoutes.includes(to.name)) {
+    router.push({ name: 'login' });
+    return;
+  }
+
   next();
 });
 
@@ -38,6 +51,7 @@ router.beforeEach((to, from, next) => {
 const store = new Vuex.Store({
   modules: {
     notifications,
+    authentication,
   },
 });
 

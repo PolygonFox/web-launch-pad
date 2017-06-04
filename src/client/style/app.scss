@@ -1,4 +1,19 @@
+$text-color: #222;
+$background-color: #fff;
+
+$anchor-color: $primary-color;
+
 body {
-  background: url('../images/background.jpg');
-  background-size: cover;
+  background: $background-color;
+  color: $text-color;
+
+  a {
+    color: $anchor-color;
+    text-decoration: underline;
+
+    &:hover {
+      color: #{$anchor-color * .9};
+      text-decoration: none;
+    }
+  }
 }

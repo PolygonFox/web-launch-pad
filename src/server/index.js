@@ -9,8 +9,6 @@ import useGraphQL from './middleware/graphql';
 import usePassport from './middleware/passport';
 import useStatic from './middleware/static';
 
-import './auth';
-
 const port = 3000;
 const app = new Koa();
 app.keys = [config.appKey];

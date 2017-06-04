@@ -3,7 +3,10 @@
   right: 15px;
   top: 15px;
 
-  $notification-background-color: #eee;
+  $text-color: #000;
+  $shadow-color: rgba(0, 0, 0, .1);
+  $background-color: #fff;
+  $notification-background-color: #fff;
   $notification-border-color: #ccc;
   $notification-success: #42f483;
   $notification-notify: #41c1f4;
@@ -11,12 +14,13 @@
   $notification-warn: #f45b41;
 
   .notification {
-    background-color: rgba($notification-background-color, .3);
+    background: $background-color;
+    box-shadow: 2px 2px 2px 0 $shadow-color;
+    color: $text-color;
     margin: 15px;
     min-height: 100px;
     min-width: 250px;
     padding: 15px;
-    box-shadow: 2px 2px 2px 0px rgba(0,0,0,0.10);
 
     &.success {
       border-left: 5px solid $notification-success;
