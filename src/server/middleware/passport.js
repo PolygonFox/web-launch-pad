@@ -12,6 +12,7 @@ export default (app) => {
 
   // Authentication
   app.use(passport.initialize());
+  app.use(passport.session());
 
   passport.use(new JwtStrategy(opts, (jwtPayload, done) => {
     User.findOne({ id: jwtPayload.id }, (err, user) => {
@@ -72,6 +73,12 @@ export default (app) => {
     }
   }));
 
+  app.use(route.post('/logout', (ctx) => {
+    console.log(this.session);
+    this.session = null;
+    ctx.response.body = { success: true };
+  }));
+
   app.use(route.post('/authenticate',
     async (ctx) => {
       const user = await User.findOne({ email: ctx.request.body.email });
@@ -93,7 +100,7 @@ export default (app) => {
       }
     },
   ));
-  app.use(route.get('/dashboard', passport.authenticate('jwt', { session: false }), (ctx) => {
+  app.use(route.get('/dashboard', passport.authenticate('jwt'), (ctx) => {
     console.log(ctx);
   }));
 };

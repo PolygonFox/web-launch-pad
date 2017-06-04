@@ -1,5 +1,9 @@
 /* eslint no-param-reassign: "off"*/
 
+import Vue from 'vue';
+import settings from '../../../settings';
+import router from './../../router';
+
 // Initial state
 export const state = {
   authenticated: window.localStorage.getItem('token') !== null,
@@ -24,7 +28,12 @@ export const actions = {
     commit('LOGIN', token);
   },
   logout({ commit }) {
-    commit('LOGOUT');
+    Vue.http.post(`${settings.api}/logout`).then((response) => {
+      if (response.data.success) {
+        commit('LOGOUT');
+        router.push({ name: 'auth.login' });
+      }
+    });
   },
 };
 

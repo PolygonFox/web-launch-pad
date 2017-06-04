@@ -10,42 +10,19 @@ import VueApollo from 'vue-apollo';
 import { ApolloClient, createNetworkInterface } from 'apollo-client';
 
 import settings from '../settings';
+import { guestRoutes } from '../routes';
 
 // Global style
 import './style/bootstrap.scss';
 
-import { routes, guestRoutes } from './routes';
-import { store as notifications, install as installNotifications } from './notifications';
-import { store as authentication } from './auth';
+import router from './router';
+import { store as notifications, install as installNotifications } from './store/modules/notifications';
+import { store as authentication } from './store/modules/authentication';
 
 Vue.use(VueApollo);
 Vue.use(VueRouter);
 Vue.use(VueResource);
 Vue.use(Vuex);
-
-// Routes
-const router = new VueRouter({
-  mode: 'history',
-  routes,
-});
-
-router.beforeEach((to, from, next) => {
-  document.title = to.meta.title ? `${to.meta.title} - ${settings.projectName}` : settings.projectName;
-
-  const isAuthenticated = window.localStorage.getItem('token');
-
-  if (isAuthenticated) {
-    if (guestRoutes.includes(to.name)) {
-      router.push({ name: 'home' });
-      return;
-    }
-  } else if (!guestRoutes.includes(to.name)) {
-    router.push({ name: 'login' });
-    return;
-  }
-
-  next();
-});
 
 // Store
 const store = new Vuex.Store({
@@ -56,6 +33,24 @@ const store = new Vuex.Store({
 });
 
 Vue.use(installNotifications, store);
+
+
+router.beforeEach((to, from, next) => {
+  document.title = to.meta.title ? `${to.meta.title} - ${settings.projectName}` : settings.projectName;
+
+  const isAuthenticated = store.state.authentication.authenticated;
+
+  if (isAuthenticated) {
+    if (guestRoutes.includes(to.name)) {
+      router.push({ name: 'home' });
+      return;
+    }
+  } else if (!guestRoutes.includes(to.name)) {
+    router.push({ name: 'auth.login' });
+    return;
+  }
+  next();
+});
 
 sync(store, router);
 
