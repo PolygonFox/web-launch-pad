@@ -1,7 +1,7 @@
 /* eslint no-param-reassign: "off"*/
 
 import Vue from 'vue';
-import settings from '../../../settings';
+import settings from 'settings';
 import router from './../../router';
 
 // Initial state

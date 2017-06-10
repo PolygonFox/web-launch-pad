@@ -1,3 +1,5 @@
+import settings from 'settings';
+
 import comps from './client/components';
 
 export const routes = [

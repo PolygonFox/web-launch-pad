@@ -3,7 +3,7 @@ import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 import route from 'koa-route';
 import jwt from 'jsonwebtoken';
 import User from '../models/user';
-import config from '../config';
+import { server as config } from 'settings';
 
 export default (app) => {
   const opts = {};
@@ -15,7 +15,9 @@ export default (app) => {
   app.use(passport.session());
 
   passport.use(new JwtStrategy(opts, (jwtPayload, done) => {
+    console.log(jwtPayload);
     User.findOne({ id: jwtPayload.id }, (err, user) => {
+
       if (err) {
         done(err, false);
       }
@@ -26,6 +28,16 @@ export default (app) => {
       }
     });
   }));
+
+  passport.serializeUser((user, done) => {
+    console.log('serialize');
+    done(null, user);
+  });
+
+  passport.deserializeUser((user, done) => {
+    done(null, user);
+  });
+
 
   // app.use(passport.session());
   app.use(route.post('/register', async (ctx, next) => {
@@ -74,8 +86,7 @@ export default (app) => {
   }));
 
   app.use(route.post('/logout', (ctx) => {
-    console.log(this.session);
-    this.session = null;
+    ctx.session = null;
     ctx.response.body = { success: true };
   }));
 
@@ -89,8 +100,8 @@ export default (app) => {
         const isMatch = await user.comparePassword(ctx.request.body.password);
 
         if (isMatch) {
-          const token = jwt.sign({ email: user.email, role: user.role }, config.jwt.secret, {
-            expiresIn: 10080, // in seconds
+          const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, config.jwt.secret, {
+            expiresIn: '1h', // in seconds
           });
 
           ctx.response.body = { success: true, token: `JWT ${token}` };
@@ -100,7 +111,4 @@ export default (app) => {
       }
     },
   ));
-  app.use(route.get('/dashboard', passport.authenticate('jwt'), (ctx) => {
-    console.log(ctx);
-  }));
 };

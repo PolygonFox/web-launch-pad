@@ -10,6 +10,7 @@
         <ul>
           <li>Route name: {{ route.name }}</li>
           <li>Apollo Test Query: {{ apolloResult }}</li>
+          <li>Token expiration timestamp: {{ user.exp }}</li>
         </ul>
         <button class="button" @click="sendNotification">Add notification</button>
       </div>

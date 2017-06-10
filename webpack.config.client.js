@@ -20,7 +20,7 @@ module.exports = {
         include: [
           path.resolve(__dirname, 'src'),
         ],
-        loader: 'babel-loader?presets[]=es2015',
+        loader: 'babel-loader',
       },
       {
         test: /\.vue$/,
@@ -38,7 +38,8 @@ module.exports = {
   },
   resolve: {
     alias: {
-      vue: 'vue/dist/vue.js',
+      vue: path.resolve(__dirname, 'node_modules/vue/dist/vue.js'),
+      settings: path.resolve(__dirname, 'settings.js'),
     },
   },
   devServer: {

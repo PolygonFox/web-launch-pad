@@ -2,22 +2,22 @@
 // TODO: Passport / koa-passport using Local Strategy
 import Koa from 'koa';
 
-import config from './config';
+import { server as config } from 'settings';
+
 // import db from './database';
 import useCore from './middleware/core';
-import useGraphQL from './middleware/graphql';
 import usePassport from './middleware/passport';
+import useGraphQL from './middleware/graphql';
 import useStatic from './middleware/static';
 
-const port = 3000;
 const app = new Koa();
 app.keys = [config.appKey];
 
 useCore(app);
-useGraphQL(app);
 usePassport(app);
+useGraphQL(app);
 useStatic(app);
 
-app.listen(port);
+app.listen(config.port);
 
-console.log(`Server running on port: ${port}`);
+console.log(`Server running on port: ${config.port}`);

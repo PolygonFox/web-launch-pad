@@ -25,13 +25,11 @@ UserSchema.pre('save', function preSave(next) {
   const user = this;
   if (this.isModified('password') || this.isNew) {
     bcrypt.genSalt(10, (saltError, salt) => {
-      console.log(`Salt: ${salt}`);
       if (saltError) {
         next(saltError);
       }
 
       bcrypt.hash(user.password, salt, (hashError, hash) => {
-        console.log(`Hash: ${hash}`);
         if (hashError) {
           next(hashError);
         }

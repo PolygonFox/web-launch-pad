@@ -9,7 +9,7 @@ import { sync } from 'vuex-router-sync';
 import VueApollo from 'vue-apollo';
 import { ApolloClient, createNetworkInterface } from 'apollo-client';
 
-import settings from '../settings';
+import settings from 'settings';
 import { guestRoutes } from '../routes';
 
 // Global style
@@ -55,11 +55,28 @@ router.beforeEach((to, from, next) => {
 sync(store, router);
 
 // Apollo
+const networkInterface = createNetworkInterface({
+  uri: `${settings.api}/graphql`,
+  transportBatching: true,
+});
+
+networkInterface.use([{
+  applyMiddleware(req, next) {
+    if (!req.options.headers) {
+      req.options.headers = {}; // Create the header object if needed.
+    }
+
+    // get the authentication token from local storage if it exists.
+
+    const token = window.localStorage.getItem('token');
+    console.log(token);
+    req.options.headers.authorization = token ? `${token}` : null;
+    next();
+  },
+}]);
+
 const apolloClient = new ApolloClient({
-  networkInterface: createNetworkInterface({
-    uri: `${settings.api}/graphql`,
-    transportBatching: true,
-  }),
+  networkInterface,
   connectToDevTools: true,
 });
 

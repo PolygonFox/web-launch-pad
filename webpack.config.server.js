@@ -2,22 +2,21 @@ const webpack = require('webpack');
 const nodeExternals = require('webpack-node-externals');
 const path = require('path');
 
-const src = path.resolve(__dirname, './src');
+const src = path.resolve(__dirname, './src/server');
 const dist = path.resolve(__dirname, './dist/server');
 
 module.exports = {
   target: 'node',
   context: src,
-  entry: './server/index.js',
+  entry: './index.js',
   output: {
     path: dist,
     filename: 'server.js',
   },
   resolve: {
-    modules: [
-      path.resolve('./node_modules'),
-      path.resolve('./src'),
-    ],
+    alias: {
+      settings: path.resolve(__dirname, 'settings.js'),
+    },
   },
   module: {
     rules: [
