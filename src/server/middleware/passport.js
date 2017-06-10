@@ -3,26 +3,22 @@ import { Strategy as JwtStrategy, ExtractJwt } from 'passport-jwt';
 import route from 'koa-route';
 import jwt from 'jsonwebtoken';
 import User from '../models/user';
+import mongoose from 'mongoose';
 import { server as config } from 'settings';
 
-export default (app) => {
+export default (app, publicRouter) => {
   const opts = {};
   opts.jwtFromRequest = ExtractJwt.fromAuthHeader();
   opts.secretOrKey = config.jwt.secret;
 
-  // Authentication
-  app.use(passport.initialize());
-  app.use(passport.session());
-
   passport.use(new JwtStrategy(opts, (jwtPayload, done) => {
-    console.log(jwtPayload);
-    User.findOne({ id: jwtPayload.id }, (err, user) => {
-
+    User.findOne({ _id: mongoose.Types.ObjectId(jwtPayload.id) }, (err, user) => {
       if (err) {
         done(err, false);
       }
       if (user) {
-        done(null, user);
+        console.log('Authenticated user.');
+        done(null, true);
       } else {
         done(null, false);
       }
@@ -30,7 +26,6 @@ export default (app) => {
   }));
 
   passport.serializeUser((user, done) => {
-    console.log('serialize');
     done(null, user);
   });
 
@@ -38,9 +33,7 @@ export default (app) => {
     done(null, user);
   });
 
-
-  // app.use(passport.session());
-  app.use(route.post('/register', async (ctx, next) => {
+  publicRouter.post('/register', async (ctx, next) => {
     const data = ctx.request.body;
     const errors = [];
 
@@ -83,14 +76,14 @@ export default (app) => {
         }
       }
     }
-  }));
+  });
 
-  app.use(route.post('/logout', (ctx) => {
+  publicRouter.post('/logout', (ctx) => {
     ctx.session = null;
     ctx.response.body = { success: true };
-  }));
+  });
 
-  app.use(route.post('/authenticate',
+  publicRouter.post('/authenticate',
     async (ctx) => {
       const user = await User.findOne({ email: ctx.request.body.email });
 
@@ -100,7 +93,11 @@ export default (app) => {
         const isMatch = await user.comparePassword(ctx.request.body.password);
 
         if (isMatch) {
-          const token = jwt.sign({ id: user.id, email: user.email, role: user.role }, config.jwt.secret, {
+          const token = jwt.sign({
+            id: user.id,
+            email: user.email,
+            role: user.role,
+          }, config.jwt.secret, {
             expiresIn: '1h', // in seconds
           });
 
@@ -110,5 +107,9 @@ export default (app) => {
         }
       }
     },
-  ));
+  );
+
+  // Authentication
+  app.use(passport.initialize());
+  app.use(passport.session());
 };
