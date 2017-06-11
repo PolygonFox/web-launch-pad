@@ -17,7 +17,6 @@ export default (app) => {
     const src = path.resolve('dist/web/index.html');
 
     await next();
-    console.log(ctx.response);
     if (ctx.response.status !== 200) {
       ctx.response.type = 'text/html';
       ctx.response.body = await readFileThunk(src);
