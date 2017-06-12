@@ -39,6 +39,7 @@ module.exports = {
   resolve: {
     alias: {
       vue: path.resolve(__dirname, 'node_modules/vue/dist/vue.js'),
+      Foundation: path.resolve(__dirname, 'node_modules/foundation-sites/dist/js/foundation.min.js'),
       settings: path.resolve(__dirname, 'settings.js'),
     },
   },

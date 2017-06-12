@@ -11,7 +11,6 @@ import useCore from './middleware/core';
 import usePassport from './middleware/passport';
 import useGraphQL from './middleware/graphql';
 import useStatic from './middleware/static';
-import authenticateController from './controllers/authenticate-controller';
 
 const app = new Koa();
 app.keys = [config.appKey];

@@ -33,6 +33,33 @@
           </ul>
       </div>
     </div>
+    <div class="row">
+      <div class="column">
+        <h2>Foundation test</h2>
+      </div>
+    </div>
+    <div class="row">
+      <div class="column">
+        <form>
+          <textarea v-model="editor1"></textarea>
+        </form>
+      </div>
+      <div class="column">
+        <form>
+          <textarea v-model="editor2"></textarea>
+        </form>
+      </div>
+    </div>
+
+      <div class="row equalize" data-equalizer>
+        <div class="column">
+          <div v-html="editor1" style="border: 1px solid black;" data-equalizer-watch></div>
+        </div>
+        <div class="column">
+          <div v-html="editor2" style="border: 1px solid black;" data-equalizer-watch></div>
+        </div>
+      </div>
+
   </div>
 </template>
 
@@ -90,12 +117,21 @@ export default {
     return {
       apolloResult: 'Pending..',
       shipName: '',
+      editor1: '<h1>Example</h1><h2>Example</h2>',
+      editor2: '<h1>Example</h1><h2>Example</h2>',
     };
   },
   computed: mapState({
     route: state => state.route,
     user: state => decodeJWT(state.authentication.token),
   }),
+  updated() {
+    this.equalizer = new Foundation.Equalizer($(".equalize"));
+    console.log(this.equalizer);
+  },
+  destroyed() {
+    this.equalizer.destroy();
+  },
 };
 
 </script>

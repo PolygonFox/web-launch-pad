@@ -12,7 +12,9 @@ import { ApolloClient, createNetworkInterface } from 'apollo-client';
 import settings from 'settings';
 import { guestRoutes } from '../routes';
 
-// Global style
+import 'script-loader!jquery/dist/jquery.min';
+import 'script-loader!foundation-sites/dist/js/foundation.min';
+
 import './style/bootstrap.scss';
 
 import router from './router';
