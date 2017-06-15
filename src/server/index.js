@@ -3,15 +3,16 @@
 import Koa from 'koa';
 import Router from 'koa-router';
 
+import https from 'https';
+import fs from 'fs';
+
 import { server as config } from 'settings';
 
-// import db from './database';
 import authentication from './middleware/auth';
 import useCore from './middleware/core';
 import usePassport from './middleware/passport';
 import useGraphQL from './middleware/graphql';
 import useStatic from './middleware/static';
-import authenticateController from './controllers/authenticate-controller';
 
 const app = new Koa();
 app.keys = [config.appKey];
@@ -29,6 +30,12 @@ useStatic(app);
 app.use(publicRouter.routes());
 app.use(secureRouter.routes());
 
+if (config.SSL.enabled) {
+  https.createServer({
+    key: fs.readFileSync(config.SSL.keyPath),
+    cert: fs.readFileSync(config.SSL.certPath),
+  }, app.callback()).listen(config.SSL.port);
+}
 
 app.listen(config.port);
 

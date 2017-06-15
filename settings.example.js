@@ -1,5 +1,10 @@
 export const server = {
   port: 3000,
+  SSL: {
+    enabled: false,
+    keyPath: '',
+    certPath: '',
+  },
   appKey: 'MySecretKey',
   jwt: {
     secret: 'MySecretKey',
@@ -11,6 +16,6 @@ export const server = {
 
 export default {
   projectName: 'Web Launch Pad',
-  api: 'http://192.168.2.29:3000',
+  api: 'http://localhost:3000',
   server,
 };

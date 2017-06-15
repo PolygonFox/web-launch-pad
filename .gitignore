@@ -1,5 +1,7 @@
 node_modules
 
+settings.js
+
 dist/*
 !dist/web
 dist/web/*
